@@ -1,0 +1,1686 @@
+LatticeParameters {
+  X = (0, 0, -1)
+  Y = (1, 1, 0)
+}
+
+Material= "Silicon" {
+    *----------------------------------------------------------------------
+    * Generation & Recombination:
+    *----------------------------------------------------------------------
+    * Recombination( SRH( DopingDep Tunneling ) )
+   	 
+    Scharfetter * relation and trap level for SRH recombination:
+    { * tau = taumin + ( taumax - taumin ) / ( 1 + ( N/Nref )^gamma)
+      * tau(T) = tau * ( (T/300)^Talpha )      	(TempDep)
+      * tau(T) = tau * exp( Tcoeff * ((T/300)-1) ) (ExpTempDep)
+   	 taumin    = 0.0000e+00 ,    0.0000e+00    # [s]
+   	 taumax    = 1.0000e-05 ,    3.0000e-06    # [s]
+    *    Nref    = 1.0000e+16 ,    1.0000e+16    # [cm^(-3)]
+   	 Nref    = 5.0000e+16 ,    5.0000e+16    # [cm^(-3)]
+   	 gamma    = 1 ,    1    # [1]
+   	 Talpha    = -1.5000e+00 ,    -1.5000e+00    # [1]
+   	 Tcoeff    = 2.55 ,    2.55    # [1]
+   	 Etrap    = 0.0000e+00    # [eV]
+    
+
+    TrapAssistedTunneling * lifetimes:
+    { * See Dessis manual `Trap-Assisted Tunneling/SRH'
+   	 S    = 3.5    # [1]
+   	 hbarOmega    = 0.068    # [eV]
+   	 MinField    = 1.0000e+03    # [V/cm]
+   	 m_theta    = 0.258 ,    0.24    # [1]
+   	 Z    = 0.0000e+00    # [1]
+    
+
+    *----------------------------------------------------------------------
+    * Recombination( Band2Band )
+
+    Band2BandTunneling  
+    { * See Sentaurus Device manual `Band-To-Band Tunneling'
+   	 A    = 8.9770e+20    # [cm / (s V^2)]
+   	 B    = 2.1466e+07    # [eV^(-3/2) V/cm]
+   	 hbarOmega    = 0.0186    # [eV]
+
+      * Traditional models for the following keywords in input file:
+      * Band2Band(E1)  : A1*E*exp(-B1/E)
+      * Band2Band(E1_5): A1_5*E^1.5*exp(-B1_5/E)
+      * Band2Band(E2)  : A2*E^2*exp(-B2/E)
+   	 A1    = 1.1000e+27    # [1/cm/sec/V]
+   	 B1    = 2.1300e+07    # [V/cm]
+   	 A1_5    = 1.9000e+24    # [1/cm/sec/V^1.5]
+   	 B1_5    = 2.1900e+07    # [V/cm]
+   	 A2    = 3.5000e+21    # [1/cm/sec/V^2]
+   	 B2    = 2.2500e+07    # [V/cm]
+
+      * min length to interfaces (for traditional & Hurkx models):
+   	 dDist    = 0.0000e+00    # [cm]
+      * min potential difference on length dPot/E (for traditional & Hurkx models):
+   	 dPot    = 0.0000e+00    # [V]
+    
+
+    *-------------------------------------------------------------------------------
+    * Mobility Models
+    *-------------------------------------------------------------------------------
+
+    Lombardi_highk {
+     alpha_lom_e = 0.0
+     alpha_lom_h = 0.0
+     alpha_rcs_e = 0.0
+     alpha_rcs_h = 0.0
+    
+
+    *---- start IALMob parameters --------------------------------------------------
+
+
+    IALMob "100" {
+      * Minimum normal field required for calling the Enormal PMI.
+      * This should always be set to 0.0 for IALMob.
+   	 EnormMinimum	= 0.0       	# [V/cm]
+
+      * PhuMob clustering parameters.
+   	 nref_D   	 = 4.0000e+20    # [cm^(-3)]
+   	 nref_A   	 = 7.2000e+20    # [cm^(-3)]
+   	 cref_D   	 = 0.21   	 # [1]
+   	 cref_A   	 = 0.5   	 # [1]
+
+      * PhuMob lattice scattering and 3D Coulomb parameters.
+     	 mumax_e     = 1417.0    # [cm^2/Vs]
+   	 mumin_e 	 = 52.2   	 # [cm^2/Vs]
+   	 theta_e   	 = 2.285   	 # [1]
+   	 n_ref_e 	 = 9.6800e+16    # [cm^(-3)]
+   	 alpha_e 	 = 0.68   	 # [1]
+
+     	 mumax_h     = 470.5   	 # [cm^2/Vs]
+   	 mumin_h  	 = 44.9   	 # [cm^2/Vs]
+   	 theta_h   	 = 2.247   	 # [1]
+   	 n_ref_h  	 = 2.2300e+17    # [cm^(-3)]
+   	 alpha_h  	 = 0.719   	 # [1]
+
+      * Lombardi accoutic phonon parameters (not standard defaults).
+   	 B_e    	 = 2.71e+07   	 # [cm/s]
+     	 C_e   	 = 1.36e+04    # [cm^(5/3)/(V^(2/3)s)]
+   	 lambda_e    = 0.0233   	 # [1]
+   	 k_e         	= 1.0       	# [1]
+
+   	 B_h    	 = 1.13e+07   	 # [cm/s]
+     	 C_h   	 = 3.05e+03    # [cm^(5/3)/(V^(2/3)s)]
+   	 lambda_h    = 0.0119   	 # [1]
+   	 k_h         	= 1.0       	# [1]
+
+      * Lombardi surface roughness parameters (not standard defaults).
+   	 delta_e   	 = 3.5800e+18    # [V/s]
+     	 A_e   	 = 2.58   	 # [1]
+   	 alpha_sr_e    = 2.74e-20   	 # [1]
+   	 lambda_sr_e    = 0.0
+   	 nu_e        	= 0.0767       	# [1]
+   	 eta_e       	= 1.e50     	# [V^2/cm*s]
+   	 l_crit_e    = 1.000e-06
+   	 
+   	 delta_h   	 = 4.1000e+15    # [V/s]
+     	 A_h   	 = 2.18   	 # [1]
+   	 alpha_sr_h    = 3.13e-20   	 # [1]
+   	 lambda_sr_h    = 0.0
+   	 nu_h        	= 0.123       	# [1]
+   	 eta_h       	= 1.e50     	# [V^2/cm*s]
+   	 l_crit_h    = 1.000e-06
+
+      * PhuMob mass ratios (not standard defaults).
+   	 me_over_m0    = 0.26   	 # [1]
+   	 mh_over_m0    = 0.26   	 # [1]
+
+      * 2D Coulomb scattering parameters.
+   	 D1_e   	 = 135.0   	 # [cm^2/Vs]
+   	 D2_e   	 =  40.0   	 # [cm^2/Vs]
+   	 nu0_e       	=   1.5     	# [1]
+   	 nu1_e       	=   2.0     	# [1]
+   	 nu2_e       	=   0.5     	# [1]
+
+   	 D1_h   	 = 135.0   	 # [cm^2/Vs]
+   	 D2_h   	 =  40.0   	 # [cm^2/Vs]
+   	 nu0_h       	=   1.5     	# [1]
+   	 nu1_h       	=   2.0     	# [1]
+   	 nu2_h       	=   0.5     	# [1]
+    
+
+
+
+    IALMob "110" {
+      * Minimum normal field required for calling the Enormal PMI.
+      * This should always be set to 0.0 for IALMob.
+   	 EnormMinimum	= 0.0       	# [V/cm]
+
+      * PhuMob clustering parameters.
+   	 nref_D   	 = 4.0000e+20    # [cm^(-3)]
+   	 nref_A   	 = 7.2000e+20    # [cm^(-3)]
+   	 cref_D   	 = 0.21   	 # [1]
+   	 cref_A   	 = 0.5   	 # [1]
+
+      * PhuMob lattice scattering and 3D Coulomb parameters.
+     	 mumax_e     = 1417.0    # [cm^2/Vs]
+   	 mumin_e 	 = 52.2   	 # [cm^2/Vs]
+   	 theta_e   	 = 2.285   	 # [1]
+   	 n_ref_e 	 = 9.6800e+16    # [cm^(-3)]
+   	 alpha_e 	 = 0.68   	 # [1]
+
+     	 mumax_h     = 470.5   	 # [cm^2/Vs]
+   	 mumin_h  	 = 44.9   	 # [cm^2/Vs]
+   	 theta_h   	 = 2.247   	 # [1]
+   	 n_ref_h  	 = 2.2300e+17    # [cm^(-3)]
+   	 alpha_h  	 = 0.719   	 # [1]
+
+      * Lombardi accoutic phonon parameters (non standard 110).
+
+
+   	 B_e   	 = 1.805e+07    # [cm/s]
+   	 C_e   	 = 5.1e3    # [cm^(5/3)/(V^(2/3)s)]
+   	 lambda_e    = 0.0233    # [1]
+   	 k_e   	 = 1.0   	 # [1]
+   	 
+   	 B_h   	 = 3.02e+07    # [cm/s]
+   	 C_h   	 = 1.672e+04    # [cm^(5/3)/(V^(2/3)s)]
+   	 lambda_h    = 0.0119    # [1]
+   	 k_h   	 = 1.0   	 # [1]
+   	 
+      * Lombardi surface roughness parameters (non standard 110).
+
+
+   	 delta_e   	 = 1.79e+18    # [V/s]
+   	 A_e   	 = 2.688   	 # [1]
+   	 alpha_sr_e    = 2.74e-20        	# [1]
+   	 lambda_sr_e    = 0.0
+   	 nu_e   	 = 0.0767    # [1]
+   	 eta_e   	 = 1.0e+50    # [V^2/cm*s]
+   	 l_crit_e    = 1.0000e-06    # [cm]
+   	 
+   	 delta_h   	 = 1.23e+16    # [V/s]
+   	 A_h   	 = 2.18   	 # [1]
+   	 alpha_sr_h    = 3.13e-20  	# [1]
+   	 lambda_sr_h    = 0.0
+   	 nu_h   	 = 0.123   	 # [1]
+   	 eta_h   	 = 1.0e+50    # [V^2/cm*s]
+   	 l_crit_h    = 1.0000e-06    # [cm]
+   	 
+      * PhuMob mass ratios (not standard defaults).
+   	 me_over_m0    = 0.26   	 # [1]
+   	 mh_over_m0    = 0.26   	 # [1]
+
+      * 2D Coulomb scattering parameters.
+   	 D1_e   	 = 135.0   	 # [cm^2/Vs]
+   	 D2_e   	 =  40.0   	 # [cm^2/Vs]
+   	 nu0_e       	=   1.5     	# [1]
+   	 nu1_e       	=   2.0     	# [1]
+   	 nu2_e       	=   0.5     	# [1]
+
+   	 D1_h   	 = 135.0   	 # [cm^2/Vs]
+   	 D2_h   	 =  40.0   	 # [cm^2/Vs]
+   	 nu0_h       	=   1.5     	# [1]
+   	 nu1_h       	=   2.0     	# [1]
+   	 nu2_h       	=   0.5     	# [1]
+    
+
+
+    IALMob "111" {
+      * Minimum normal field required for calling the Enormal PMI.
+      * This should always be set to 0.0 for IALMob.
+   	 EnormMinimum	= 0.0       	# [V/cm]
+
+      * PhuMob clustering parameters.
+   	 nref_D   	 = 4.0000e+20    # [cm^(-3)]
+   	 nref_A   	 = 7.2000e+20    # [cm^(-3)]
+   	 cref_D   	 = 0.21   	 # [1]
+   	 cref_A   	 = 0.5   	 # [1]
+
+      * PhuMob lattice scattering and 3D Coulomb parameters.
+     	 mumax_e     = 1417.0    # [cm^2/Vs]
+   	 mumin_e 	 = 52.2   	 # [cm^2/Vs]
+   	 theta_e   	 = 2.285   	 # [1]
+   	 n_ref_e 	 = 9.6800e+16    # [cm^(-3)]
+   	 alpha_e 	 = 0.68   	 # [1]
+
+     	 mumax_h     = 470.5   	 # [cm^2/Vs]
+   	 mumin_h  	 = 44.9   	 # [cm^2/Vs]
+   	 theta_h   	 = 2.247   	 # [1]
+   	 n_ref_h  	 = 2.2300e+17    # [cm^(-3)]
+   	 alpha_h  	 = 0.719   	 # [1]
+
+      * Lombardi accoutic phonon parameters (not standard defaults).
+   	 B_e    	 = 9.0e5   	 # [cm/s]
+     	 C_e   	 = 4400.0    # [cm^(5/3)/(V^(2/3)s)]
+   	 lambda_e    = 0.057   	 # [1]
+   	 k_e         	= 1.0       	# [1]
+
+   	 B_h    	 = 9.0e5   	 # [cm/s]
+     	 C_h   	 = 4400.0    # [cm^(5/3)/(V^(2/3)s)]
+   	 lambda_h    = 0.057   	 # [1]
+   	 k_h         	= 1.0       	# [1]
+
+      * Lombardi surface roughness parameters (not standard defaults).
+   	 delta_e   	 = 3.97e13    # [V/s]
+     	 A_e   	 = 2.0   	 # [1]
+   	 alpha_sr_e    = 0.0   	 # [1]
+   	 nu_e        	= 0.0       	# [1]
+   	 eta_e       	= 1.e50     	# [V^2/cm*s]
+
+   	 delta_h   	 = 3.97e13    # [V/s]
+     	 A_h   	 = 2.0   	 # [1]
+   	 alpha_sr_h    = 0.0   	 # [1]
+   	 nu_h        	= 0.0       	# [1]
+   	 eta_h       	= 1.e50     	# [V^2/cm*s]
+
+      * PhuMob mass ratios (not standard defaults).
+   	 me_over_m0    = 0.26   	 # [1]
+   	 mh_over_m0    = 0.26   	 # [1]
+
+      * 2D Coulomb scattering parameters.
+   	 D1_e   	 = 135.0   	 # [cm^2/Vs]
+   	 D2_e   	 =  40.0   	 # [cm^2/Vs]
+   	 nu0_e       	=   1.5     	# [1]
+   	 nu1_e       	=   2.0     	# [1]
+   	 nu2_e       	=   0.5     	# [1]
+
+   	 D1_h   	 = 135.0   	 # [cm^2/Vs]
+   	 D2_h   	 =  40.0   	 # [cm^2/Vs]
+   	 nu0_h       	=   1.5     	# [1]
+   	 nu1_h       	=   2.0     	# [1]
+   	 nu2_h       	=   0.5     	# [1]
+    
+
+    IALMob {
+      * Minimum normal field required for calling the Enormal PMI.
+      * This should always be set to 0.0 for IALMob.
+   	 EnormMinimum	= 0.0       	# [V/cm]
+
+      * PhuMob clustering parameters.
+   	 nref_D   	 = 4.0000e+20    # [cm^(-3)]
+   	 nref_A   	 = 7.2000e+20    # [cm^(-3)]
+   	 cref_D   	 = 0.21   	 # [1]
+   	 cref_A   	 = 0.5   	 # [1]
+
+      * PhuMob lattice scattering and 3D Coulomb parameters.
+     	 mumax_e     = 1417.0    # [cm^2/Vs]
+   	 mumin_e 	 = 52.2   	 # [cm^2/Vs]
+   	 theta_e   	 = 2.285   	 # [1]
+   	 n_ref_e 	 = 9.6800e+16    # [cm^(-3)]
+   	 alpha_e 	 = 0.68   	 # [1]
+
+     	 mumax_h     = 470.5   	 # [cm^2/Vs]
+   	 mumin_h  	 = 44.9   	 # [cm^2/Vs]
+   	 theta_h   	 = 2.247   	 # [1]
+   	 n_ref_h  	 = 2.2300e+17    # [cm^(-3)]
+   	 alpha_h  	 = 0.719   	 # [1]
+
+      * Lombardi accoutic phonon parameters (not standard defaults).
+   	 B_e    	 = 9.0e5   	 # [cm/s]
+     	 C_e   	 = 4400.0    # [cm^(5/3)/(V^(2/3)s)]
+   	 lambda_e    = 0.057   	 # [1]
+   	 k_e         	= 1.0       	# [1]
+
+   	 B_h    	 = 9.0e5   	 # [cm/s]
+     	 C_h   	 = 4400.0    # [cm^(5/3)/(V^(2/3)s)]
+   	 lambda_h    = 0.057   	 # [1]
+   	 k_h         	= 1.0       	# [1]
+
+      * Lombardi surface roughness parameters (not standard defaults).
+   	 delta_e   	 = 3.97e13    # [V/s]
+     	 A_e   	 = 2.0   	 # [1]
+   	 alpha_sr_e    = 0.0   	 # [1]
+   	 nu_e        	= 0.0       	# [1]
+   	 eta_e       	= 1.e50     	# [V^2/cm*s]
+
+   	 delta_h   	 = 3.97e13    # [V/s]
+     	 A_h   	 = 2.0   	 # [1]
+   	 alpha_sr_h    = 0.0   	 # [1]
+   	 nu_h        	= 0.0       	# [1]
+   	 eta_h       	= 1.e50     	# [V^2/cm*s]
+
+      * PhuMob mass ratios (not standard defaults).
+   	 me_over_m0    = 0.26   	 # [1]
+   	 mh_over_m0    = 0.26   	 # [1]
+
+      * 2D Coulomb scattering parameters.
+   	 D1_e   	 = 135.0   	 # [cm^2/Vs]
+   	 D2_e   	 =  40.0   	 # [cm^2/Vs]
+   	 nu0_e       	=   1.5     	# [1]
+   	 nu1_e       	=   2.0     	# [1]
+   	 nu2_e       	=   0.5     	# [1]
+
+   	 D1_h   	 = 135.0   	 # [cm^2/Vs]
+   	 D2_h   	 =  40.0   	 # [cm^2/Vs]
+   	 nu0_h       	=   1.5     	# [1]
+   	 nu1_h       	=   2.0     	# [1]
+   	 nu2_h       	=   0.5     	# [1]
+    
+
+    *---- end IALMob parameters ----------------------------------------------------
+
+    *-------------------------------------------------------------------------------
+    * Highfield Saturation (Haensch settings for use together with IALMOb)
+
+    HighFieldDependence {
+      * Caughey-Thomas model:
+      * mu_highfield = ( (alpha+1)*mu_lowfield ) /
+      *    	( alpha + ( 1 + ( (alpha+1)*mu_lowfield*E/vsat)^beta )^(1/beta) )
+      * beta = beta0 (T/T0)^betaexp.
+      
+      * IALMob/Lucent parameters
+   	 beta0    = 2.0  	,    2.0   	 # [1]
+   	 betaexp    = 0.0  	,    0.0   	 # [1]
+   	 alpha    = 1.0  	,	1.0 		 # [1]
+   	 
+   	 *beta0    = 1.109  	,    1.213   	 # [1]
+   	 *betaexp= 0.66   	,    0.17   	 # [1]
+   	 *alpha    = 0.0000e+00 ,    0.0000e+00    # [1]
+   	 
+   	 
+     * For vsat either Formula1 or Formula2 can be used.
+   	 Vsat_Formula    = 1 ,    1    # [1]
+     * Formula1 for saturation velocity:
+     *        	vsat = vsat0 (T/T0)^(-Vsatexp)
+     * (Parameter Vsat_Formula has to be not equal to 2)
+   	 *vsat0    = 1.0700e+07 ,    8.3700e+06    # [1]
+   	 *vsatexp= 0.87   	,    0.52   	 # [1]
+     * Used a fixed vsat value for this example.
+   	 vsat0    = 1.034939e7 ,    1.034939e7    # [1]
+   	 vsatexp = 0.0     	,    0.0   	 # [1]
+    
+    *-------------------------------------------------------------------------------
+
+
+    * Lucent Mobility Model
+    * Parameters according to
+    * M.N. Darwish et al., IEEE Trans. Elect. Dev. 44, No 9., p 1529-1537, 1997
+
+    EnormalDependence
+    { * mu_Enorm^(-1) = mu_ac^(-1) + mu_sr^(-1)  with:
+      * mu_ac = B / Enorm + C (T/T0)^(-k) (N/N0)^lambda / Enorm^(1/3)
+      * mu_sr^-1 = Enorm^(A+alpha*n/(N+N1)^nu) / delta + Enorm^3 / eta
+      * EnormalDependence is added with factor exp(-l/l_crit), where l is
+      * the distance to the nearest point of semiconductor/insulator interface.
+      * Factor is equal to 1 if l_crit > 100.
+   	 B    = 3.61e+07 ,    1.51e+07    # [cm/s]
+   	 C    = 1.70e+04 ,    4.18e+03    # [cm^5/3/(sV^2/3)]
+   	 N0    = 1   	,    1   	 # [cm^-3]
+   	 lambda    = 0.0233   ,    0.0119   	 # [1]
+   	 k    = 1.7   	,    0.9   	 # [1]
+   	 delta    = 3.58e+18 ,    4.10e+15    # [V/s]
+   	 A    = 2.58   	,    2.18   	 # [1]
+    *    alpha    = 6.85e-21 ,    7.82e-21    # [1]
+    * Increase to accomodated for Density Gradient Model
+   	 alpha    = 2e-20	,    3e-20    # [1]
+   	 N1    = 1   	,    1   	 # [cm^-3]
+   	 nu    = 0.0767   ,    0.123   	 # [1]
+   	 eta    = 1.0e+50 ,    1.0e+50    # [V^2/cm*s]
+   	 l_crit    = 1    	,    1   	 # [cm]
+    
+
+    EnormalDependence "100"
+    { * mu_Enorm^(-1) = mu_ac^(-1) + mu_sr^(-1)  with:
+      * mu_ac = B / Enorm + C (T/T0)^(-k) (N/N0)^lambda / Enorm^(1/3)
+      * mu_sr^-1 = Enorm^(A+alpha*n/(N+N1)^nu) / delta + Enorm^3 / eta
+      * EnormalDependence is added with factor exp(-l/l_crit), where l is
+      * the distance to the nearest point of semiconductor/insulator interface.
+      * Factor is equal to 1 if l_crit > 100.
+    #if 0
+   	 B    = 3.61e+07 ,    1.51e+07    # [cm/s]
+   	 C    = 1.70e+04 ,    4.18e+03    # [cm^5/3/(sV^2/3)]
+   	 N0    = 1   	,    1   	 # [cm^-3]
+   	 lambda    = 0.0233   ,    0.0119   	 # [1]
+   	 k    = 1.7   	,    0.9   	 # [1]
+   	 delta    = 3.58e+18 ,    4.10e+15    # [V/s]
+   	 A    = 2.58   	,    2.18   	 # [1]
+    *    alpha    = 6.85e-21 ,    7.82e-21    # [1]
+    * Increase to accomodated for Density Gradient Model
+   	 alpha    = 2e-20	,    3e-20    # [1]
+   	 N1    = 1   	,    1   	 # [cm^-3]
+   	 nu    = 0.0767   ,    0.123   	 # [1]
+   	 eta    = 5.82e+30 ,    2.0546e+30    # [V^2/cm*s]
+   	 l_crit    = 1    	,    1   	 # [cm]
+    #endif    
+   	 
+   	 B   	= 2.71e+07   ,  1.13e+07    	# [cm/s]
+   	 C   	= 1.36e+03   ,  3.05e+03    	# [cm^(5/3)/(V^(2/3)s)]
+   	 N0    = 1      	,    1        	# [cm^(-3)]
+   	 lambda  = 0.0233 	,  0.0119      	# [1]
+   	 k    = 1      	,    1   	 # [1]
+   	 delta   = 3.5800e+18 ,  4.1000e+15  	# [V/s]
+   	 A   	= 2.58   	,  2.18        	# [1]
+   	 alpha   = 2.74e-20   ,  3.13e-20    	# [1]
+   	 aother    = 0.0000e+00 ,    0.0000e+00    # [1]
+   	 N1    = 1      	,    1   	 # [cm^(-3)]
+   	 nu  	= 0.0767 	,  0.123        	# [1]
+   	 eta 	= 1.0e+300   ,  1.0e+300    	# [V^2/cm*s]
+   	 l_crit  = 1.0000e-06 ,  1.0000e-06  	# [cm]
+   	 
+    
+
+    EnormalDependence "110"
+    { * mu_Enorm^(-1) = mu_ac^(-1) + mu_sr^(-1)  with:
+      * mu_ac = B / Enorm + C (T/T0)^(-k) (N/N0)^lambda / Enorm^(1/3)
+      * mu_sr^-1 = Enorm^(A+alpha*n/(N+N1)^nu) / delta + Enorm^3 / eta
+      * EnormalDependence is added with factor exp(-l/l_crit), where l is
+      * the distance to the nearest point of semiconductor/insulator interface.
+      * Factor is equal to 1 if l_crit > 100.
+     ** B, C/300, lambda,
+    
+    #if 0
+   	 B    = 2.52e+07 ,    1.51e+07    # [cm/s]
+   	 C    = 1.19e+04 ,    4.18e+03    # [cm^(5/3)/(V^(2/3)s)]
+   	 N0    = 1 ,   	 1    # [cm^(-3)]
+   	 lambda    = 0.0233   ,    0.0119    # [1]
+   	 k    = 1.7 ,   	 0.9    # [1]
+   	 delta    = 2.51e+14 ,    4.10e+15    # [V/s]
+   	 A    = 2.58 ,    2.58    # [1]
+   	 alpha    = 2e-20	,    3e-20        	# [1]
+   	 N1    = 1 ,   	 1    # [cm^(-3)]
+   	 nu    = 0.0767   ,    0.123    # [1]
+   	 eta    = 4.074e+30 ,    2.0546e+30    # [V^2/cm*s]
+   	 l_crit    = 1.0000e-06 ,    1.0000e-06    # [cm]
+    #endif
+
+   	 B     = 1.805e+07  ,  3.02e+07    	# [cm/s]
+   	 C     = 5.1e+03	,  1.672e+04   	# [cm^(5/3)/(V^(2/3)s)]
+   	 N0    = 1      	,    1   	 # [cm^(-3)]
+   	 lambda  = 0.0233 	,  0.0119 	 # [1]
+   	 k    = 1      	,    1   	 # [1]
+   	 delta   = 3.58e+18   ,  4.1e+15     	# [V/s]
+   	 A     = 2.66     	,  2.18        	# [1]
+   	 alpha   = 2.74e-20   ,  3.13e-20    	# [1]
+   	 aother    = 0.0000e+00 ,    0.0000e+00    # [1]
+   	 N1    = 1      	,    1   	 # [cm^(-3)]
+   	 nu  	= 0.0767 	,  0.123       	# [1]
+   	 eta 	= 1.0e+30	,  1.0e+30     	# [V^2/cm*s]
+   	 l_crit    = 1.0000e-06 ,    1.0000e-06    # [cm]
+    }    
+   	 
+
+    *----------------------------------------------------------------------
+    * Transport Models
+    *----------------------------------------------------------------------
+    * Hydrodynamics
+    EnergyRelaxationTime
+    { *  Energy relaxation times in picoseconds
+   	 (tau_w)_ele    = 0.3   # [ps]
+   	 (tau_w)_hol    = 0.3    # [ps]
+    
+
+    HighFieldDependence:
+    { * Caughey-Thomas model
+      * and HydroHighField mobility is used.
+   	 K_dT    = 1e-4 ,    1e-4 # [1]
+    
+
+    *----------------------------------------------------------------------
+    * Density Gradient Quantum Transport
+
+    QuantumPotentialParameters
+    { * gamma:  weighting factor for quantum potential
+      * theta:  weight for quadratic term
+      * xi: 	weight for quasi Fermi potential
+      * eta:	weight for electrostatic potential
+   	 gamma    = 3.6 ,    5.6    # [1]
+   	 theta    = 0.5 ,    0.5    # [1]
+   	 xi    = 1 ,    1    # [1]
+   	 eta    = 1 ,    1    # [1]
+    
+
+    BarrierTunneling
+    { * Non Local Barrier Tunneling
+   	 mt  	= 0.55 ,  0.21
+    
+
+    LatticeParameters
+    { * Crystal system, elasticity, and deformation potential are defined.
+      * X and Y vectors define the simulation coordinate system relative to the
+      * crystal orientation system. Also there is an option to represent the crystal
+      * system relative to the simulation one. In this case a keyword CrystalAxis
+      * has to be in this section and X and Y vectors will represent [100] and [010]
+      * axis of the crystal system in the simulation one.
+      * Additional notes: 1 Pa = 10 dyn/cm^2; tensile stress/strain is positive.
+      *  
+      * S[i][j] - elasticity modulus; i,j = 1,2,...6 and j>=i.
+      * CrystalSystem is symmetry, used ONLY to define the elasticity matrics.
+      *   Cubic (CrystalSystem=0): S[1][1],S[1][2],S[4][4]
+      *   Hexagonal (CrystalSystem=1): S[1][1],S[1][2],S[1][3],S[3][3],S[4][4]
+      * NC is a number of conduction band levels taken into account
+      * NV is a number of valence band levels taken into account
+      * DC2(l) defines deformation potentials for conduction subband = l
+      * DV2(l) defines deformation potentials for valence subband = l
+      * The subband energy shift due to strain (E) is equal to the following sum:
+      * D2[1]*E11 + D2[2]*E22 + D2[3]*E33 +
+      * D2[4]*(0.5*D2[5]^2*((E11-E22)^2+(E22-E33)^2+(E33-E11)^2)+D2[6]^2*(E23^2+E13^2+E12^2))
+      
+      
+      
+    #    X    = (0, 0, -1) #[1]
+    #    Y    = (1, -1, 0) #[1]
+   	 
+   	 
+   	 S[1][1]    = 0.77    # [1e-12 cm^2/din]
+   	 S[1][2]    = -2.1000e-01    # [1e-12 cm^2/din]
+   	 S[4][4]    = 1.25    # [1e-12 cm^2/din]
+   	 CrystalSystem    = 0    # [1]
+   	 NC    = 3    # [1]
+   	 NV    = 2    # [1]
+   	 DC2(1)    = 0.9, -8.6000e+00, -8.6000e+00, 0.0000e+00, 0.0000e+00, 0.0000e+00    #[eV]
+   	 DC2(2)    = -8.6000e+00, 0.9, -8.6000e+00, 0.0000e+00, 0.0000e+00, 0.0000e+00    #[eV]
+   	 DC2(3)    = -8.6000e+00, -8.6000e+00, 0.9, 0.0000e+00, 0.0000e+00, 0.0000e+00    #[eV]
+   	 DV2(1)    = -2.1000e+00, -2.1000e+00, -2.1000e+00, -1.0000e+00, 0.5, 4    #[eV]
+   	 DV2(2)    = -2.1000e+00, -2.1000e+00, -2.1000e+00, 1, 0.5, 4    #[eV]
+
+      * Deformation potentials of k.p model for electron bands
+   	 xis    = 7    # [eV]
+   	 dbs    = 0.53    # [eV]
+   	 xiu    = 9.16    # [eV]
+   	 xid    = 0.77    # [eV]
+
+      * Deformation potentials of k.p model for hole bands
+   	 adp    = 2.1    # [eV]
+   	 bdp    = -2.3300e+00    # [eV]
+   	 ddp    = -4.7500e+00    # [eV]
+   	 dso    = 0.044    # [eV]
+    
+}
+
+Material= "Oxide" {
+    Epsilon
+    { *  Ratio of the permittivities of material and vacuum
+
+      * epsilon() = epsilon
+   	 epsilon    = 3.9    # [1]
+    
+
+
+    Epsilon_aniso
+    { *  Ratio of the permittivities of material and vacuum
+
+      * epsilon() = epsilon
+   	 epsilon    = 3.9    # [1]
+    
+
+
+    RefractiveIndex
+    { *  Optical Refractive Index
+
+      * refractiveindex() = refractiveindex * (1 + alpha * (T-Tpar))
+   	 Tpar    = 3.0000e+02    # [K]
+   	 refractiveindex    = 1.46    # [1]
+   	 alpha    = 2.0000e-04    # [1/K]
+    
+
+
+    LatticeHeatCapacity
+    { *  lumped electron-hole-lattice heat capacity
+
+      * cv() = cv + cv_b * T + cv_c * T^2 + cv_d * T^3
+   	 cv    = 1.67    # [J/(K cm^3)]
+   	 cv_b    = 0.0000e+00    # [J/(K^2 cm^3)]
+   	 cv_c    = 0.0000e+00    # [J/(K^3 cm^3)]
+   	 cv_d    = 0.0000e+00    # [J/(K^4 cm^3)]
+    
+
+
+    Kappa
+    { *  Lattice thermal conductivity
+
+      * Formula = 1:
+      * kappa() = kappa + kappa_b * T + kappa_c * T^2
+   	 kappa    = 0.014    # [W/(K cm)]
+   	 kappa_b    = 0.0000e+00    # [W/(K^2 cm)]
+   	 kappa_c    = 0.0000e+00    # [W/(K^3 cm)]
+    
+
+
+    Kappa_aniso
+    { *  Lattice thermal conductivity
+
+      * Formula = 1:
+      * kappa() = kappa + kappa_b * T + kappa_c * T^2
+   	 kappa    = 0.014    # [W/(K cm)]
+   	 kappa_b    = 0.0000e+00    # [W/(K^2 cm)]
+   	 kappa_c    = 0.0000e+00    # [W/(K^3 cm)]
+    
+
+    Bandgap
+    { * Eg = Eg0 + alpha Tpar^2 / (beta + Tpar) - alpha T^2 / (beta + T)
+      * Parameter 'Tpar' specifies the value of lattice
+      * temperature, at which parameters below are defined
+      * Chi0 is electron affinity.
+   	 Chi0    = 0.9    # [eV]
+   	 Eg0    = 9    # [eV]
+   	 alpha    = 0.0000e+00    # [eV K^-1]
+   	 beta    = 0.0000e+00    # [K]
+   	 Tpar    = 0.0000e+00    # [K]
+    
+
+    FreeCarrierAbsorption
+    
+      * Coefficients for free carrier absorption:
+      * fcaalpha_n for electrons,
+      * fcaalpha_p for holes
+
+      * FCA = (alpha_n * n + alpha_p * p) * Light Intensity
+   	 fcaalpha_n    = 4.0000e-18    # [cm^2]
+   	 fcaalpha_p    = 8.0000e-18    # [cm^2]
+    
+
+    QWStrain
+    
+      * Zincblende crystals:
+      *   Parameters: a_nu, a_c, b, C_12, C_11
+      *   StrainConstant eps (formula = 1) or lattice constant
+      *   a0 (formula = 2) for energy shift of quantum-well
+      *   subbands.
+      *   a0(T) = a0 + alpha (T-Tpar)
+
+      * Wurtzite crystals:
+      *   Parameters: a_c, D1, D2, D3, D4, C_13, C_33
+      *   Lattice constants a0 and c0 (formula 2 must be used)
+      *   a0(T) = a0 + alpha (T-Tpar)
+      *   c0(T) = c0 + alpha (T-Tpar)
+
+   	   * Default formula    = 1    # [1]
+   	 eps    = 0.0000e+00    # [1]
+   	 a0    = 3.1890e-10    # [cm]
+   	 alpha    = 0.0000e+00    # [cm/K]
+   	 Tpar    = 3.0000e+02    # [K]
+   	 a_nu    = 0.0000e+00    # [eV]
+   	 a_c    = -4.0800e+00    # [eV]
+   	 b_shear    = 0.0000e+00    # [eV]
+   	 c_11    = 0.0000e+00    # [1e-2 GPa]
+   	 c_12    = 0.0000e+00    # [1e-2 GPa]
+   	 d1    = -8.9000e-01    # [eV]
+   	 d2    = 4.27    # [eV]
+   	 d3    = 5.18    # [eV]
+   	 d4    = -2.5900e+00    # [eV]
+   	 c_13    = 1    # [1e-2 GPa]
+   	 c_33    = 3.92    # [1e-2 GPa]
+   	 c0    = 5.1850e-10    # [cm]
+    
+
+    eDOSMass
+    
+      * For effective mass specificatition Formula1 (me approximation):
+      * or Formula2 (Nc300) can be used :
+   	 Formula    = 1    # [1]
+      * Formula1:
+      * me/m0 = [ (6 * mt)^2 *  ml ]^(1/3) + mm
+      * mt = a[Eg(0)/Eg(T)]
+      * Nc(T) = 2(2pi*kB/h_Planck^2*me*T)^3/2 = 2.540e19 ((me/m0)*(T/300))^3/2
+   	 a    = 0.0000e+00    # [1]
+   	 ml    = 0.0000e+00    # [1]
+   	 mm    = 0.42    # [1]
+    
+
+    hDOSMass
+    
+      * For effective mass specificatition Formula1 (mh approximation):
+      * or Formula2 (Nv300) can be used :
+   	 Formula    = 1    # [1]
+      * Formula1:
+      * mh =  m0*{[(a+bT+cT^2+dT^3+eT^4)/(1+fT+gT^2+hT^3+iT^4)]^(2/3) + mm}
+      * Nv(T) = 2(2pi*kB/h_Planck^2*mh*T)^3/2 = 2.540e19 ((mh/m0)*(T/300))^3/2
+   	 a    = 0    # [1]
+   	 b    = 0    # [K^-1]
+   	 c    = 0    # [K^-2]
+   	 d    = 0    # [K^-3]
+   	 e    = 0    # [K^-4]
+   	 f    = 0    # [K^-1]
+   	 g    = 0    # [K^-2]
+   	 h    = 0    # [K^-3]
+   	 i    = 0    # [K^-4]
+   	 mm    = 1    # [1]
+    
+
+    QuantumPotentialParameters
+    { * gamma:  weighting factor for quantum potential
+      * theta:  weight for quadratic term
+      * xi: 	weight for quasi Fermi potential
+      * eta:	weight for electrostatic potential
+   	 gamma    = 1 ,    1    # [1]
+   	 theta    = 0.5 ,    0.5    # [1]
+   	 xi    = 0.0000e+00 ,    0.0000e+00    # [1]
+   	 eta    = 0.0000e+00 ,    0.0000e+00    # [1]
+    
+    RadiativeRecombination * coefficients:
+    { * R_Radiative = C * (T/Tpar)^alpha * (n p - ni_eff^2)
+      * C    
+      * alpha
+   	 C    = 0.0000e+00    # [cm^3/s]
+   	 alpha    = 0.0000e+00    # []
+    
+
+    Radiation
+    { * G = g * D * ((E+E0)/(E+E1))^m  -  the generation term,
+      *  where E is the electric field,
+      *    	E0, E1, m are constants to account the recombination,
+      *    	g is the electron-hole creation rate ,
+      *    	D is the dose rate defined in the input file.
+   	 g    = 7.6000e+12    # [1/(rad*cm^3)]
+   	 E0    = 0.1    # [V/cm]
+   	 E1    = 1.3500e+06    # [V/cm]
+   	 m    = 0.9    # [1]
+    
+
+    TableODB
+    { * Each entry of the table consists of three values:
+      *complex refractive index n + i*k (unitless)
+      *refractive index = n,  absorption coefficient = 4*pi*k/wavelength
+      *WAVELEN(um)    n    k
+   	0.051    0.804    0.322;
+   	0.053    0.811    0.366;
+   	0.055    0.822    0.408;
+   	0.056    0.829    0.43;
+   	0.058    0.843    0.47;
+   	0.059    0.851    0.482;
+   	0.0636    0.879    0.613;
+   	0.0653    0.902    0.645;
+   	0.067    0.927    0.677;
+   	0.0689    0.957    0.712;
+   	0.0699    0.975    0.731;
+   	0.0709    0.999    0.75;
+   	0.0719    1.03    0.763;
+   	0.0729    1.072    0.768;
+   	0.074    1.124    0.765;
+   	0.0751    1.137    0.755;
+   	0.0763    1.156    0.737;
+   	0.0775    1.172    0.717;
+   	0.0787    1.178    0.703;
+   	0.08    1.172    0.696;
+   	0.0813    1.167    0.699;
+   	0.0827    1.168    0.711;
+   	0.0841    1.175    0.739;
+   	0.0855    1.195    0.771;
+   	0.087    1.225    0.799;
+   	0.0886    1.265    0.808;
+   	0.0902    1.32    0.795;
+   	0.0919    1.363    0.775;
+   	0.0936    1.371    0.755;
+   	0.0954    1.368    0.747;
+   	0.0972    1.372    0.766;
+   	0.0992    1.383    0.793;
+   	0.1012    1.41    0.824;
+   	0.1033    1.475    0.861;
+   	0.1051    1.554    0.874;
+   	0.1069    1.635    0.859;
+   	0.1088    1.716    0.81;
+   	0.1127    1.739    0.569;
+   	0.1137    1.687    0.565;
+   	0.1148    1.587    0.618;
+   	0.1159    1.513    0.725;
+   	0.117    1.492    0.914;
+   	0.1181    1.567    1.11;
+   	0.1187    1.645    1.136;
+   	0.1192    1.772    1.13;
+   	0.1198    1.919    1.045;
+   	0.1204    2.048    0.925;
+   	0.121    2.152    0.81;
+   	0.1215    2.24    0.715;
+   	0.1228    2.332    0.46;
+   	0.124    2.33    0.323;
+   	0.1252    2.292    0.236;
+   	0.1265    2.243    0.168;
+   	0.1278    2.19    0.119;
+   	0.1291    2.14    0.077;
+   	0.1319    2.047    0.043;
+   	0.1333    2.006    0.0339;
+   	0.1348    1.969    0.0271;
+   	0.1362    1.935    0.0228;
+   	0.1378    1.904    0.0189;
+   	0.1393    1.876    0.0156;
+   	0.1409    1.85    0.0132;
+   	0.1425    1.825    0.0109;
+   	0.1442    1.803    8.3800e-03;
+   	0.1459    1.783    5.5700e-03;
+   	0.1476    1.764    3.1700e-03;
+   	0.1494    1.747    1.4000e-03;
+   	0.1512    1.73    4.6300e-04;
+   	0.1531    1.716    1.2200e-04;
+   	0.155    1.702    3.2000e-05;
+   	0.159    1.676    4.7000e-06;
+   	0.1631    1.653    0.0000e+00;
+   	0.1675    1.633    0.0000e+00;
+   	0.1722    1.616    0.0000e+00;
+   	0.1771    1.6    0.0000e+00;
+   	0.1837    1.582    0.0000e+00;
+   	0.1907    1.567    0.0000e+00;
+   	0.1984    1.554    0.0000e+00;
+   	0.2066    1.543    0.0000e+00;
+   	0.2144    1.53371    0.0000e+00;
+   	0.2267    1.52276    0.0000e+00;
+   	0.2302    1.52009    0.0000e+00;
+   	0.2378    1.51474    0.0000e+00;
+   	0.2399    1.51338    0.0000e+00;
+   	0.2483    1.50841    0.0000e+00;
+   	0.2652    1.50004    0.0000e+00;
+   	0.2699    1.49805    0.0000e+00;
+   	0.2753    1.49592    0.0000e+00;
+   	0.2803    1.49404    0.0000e+00;
+   	0.2894    1.49099    0.0000e+00;
+   	0.2967    1.48873    0.0000e+00;
+   	0.30215    1.48719    0.0000e+00;
+   	0.3303    1.48053    0.0000e+00;
+   	0.33415    1.47976    0.0000e+00;
+   	0.3404    1.47858    0.0000e+00;
+   	0.3466    1.47746    0.0000e+00;
+   	0.36105    1.47512    0.0000e+00;
+   	0.365    1.47453    0.0000e+00;
+   	0.40465    1.46961    0.0000e+00;
+   	0.4358    1.46669    0.0000e+00;
+   	0.4678    1.46429    0.0000e+00;
+   	0.4861    1.46313    0.0000e+00;
+   	0.5086    1.46197    0.0000e+00;
+   	0.5461    1.46008    0.0000e+00;
+   	0.577    1.45885    0.0000e+00;
+   	0.5791    1.45877    0.0000e+00;
+   	0.5876    1.45847    0.0000e+00;
+   	0.5893    1.45841    0.0000e+00;
+   	0.64385    1.45671    0.0000e+00;
+   	0.6563    1.45637    0.0000e+00;
+   	0.6678    1.45608    0.0000e+00;
+   	0.7065    1.45515    0.0000e+00;
+   	0.8521    1.45248    0.0000e+00;
+   	0.89435    1.45185    0.0000e+00;
+   	1.014    1.45025    0.0000e+00;
+   	1.0829    1.44941    0.0000e+00;
+   	1.1287    1.44888    0.0000e+00;
+   	1.3622    1.44621    0.0000e+00;
+   	1.3951    1.44584    0.0000e+00;
+   	1.4695    1.44497    0.0000e+00;
+   	1.5295    1.44427    0.0000e+00;
+   	1.6606    1.44267    0.0000e+00;
+   	1.681    1.44241    0.0000e+00;
+   	1.6932    1.44226    0.0000e+00;
+   	1.7091    1.44205    0.0000e+00;
+   	1.8131    1.44069    0.0000e+00;
+   	1.9701    1.43851    0.0000e+00;
+   	2.0581    1.43722    0.0000e+00;
+   	2.1526    1.43576    0.0000e+00;
+   	2.3254    1.43292    0.0000e+00;
+   	2.4374    1.43095    0.0000e+00;
+   	3.2439    1.41314    0.0000e+00;
+   	3.2668    1.41253    0.0000e+00;
+   	3.3026    1.41155    0.0000e+00;
+   	3.422    1.40819    0.0000e+00;
+   	3.507    1.40568    0.0000e+00;
+   	3.5564    1.40418    0.0000e+00;
+   	10    1.4    0.0000e+00;
+   	10.001    1.4    0.0000e+00;
+   	10.002    1.4    0.0000e+00;
+    
+
+    Resistivity
+    { * Resist(T) = Resist0 * ( 1 + TempCoef * ( T - 273 ) )
+   	 Resist0    = 3.0000e+09    # [ohm*cm]
+   	 TempCoef    = 4.5000e-03    # [1/K]
+    
+
+    BarrierTunneling
+    { * Non Local Barrier Tunneling
+   	 mt  	= 0.55 ,  0.21
+    
+}
+
+
+Material= "Aluminum" {
+
+    * Copyright (c) 1994-2018 Synopsys, Inc.
+    * This parameter file and the associated documentation are proprietary
+    * to Synopsys, Inc.  This parameter file may only be used in accordance
+    * with the terms and conditions of a written license agreement with
+    * Synopsys, Inc.  All other use, reproduction, or distribution of this
+    * parameter file is strictly prohibited.
+
+
+    Epsilon
+    { *  Ratio of the permittivities of material and vacuum
+
+      * epsilon() = epsilon
+   	 epsilon    = 0.0000e+00    # [1]
+    
+
+
+    Epsilon_Inf
+    { *  Ratio of the high frequency limit of permittivities of material and vacuum
+
+      * epsilon_inf() = epsilon_inf
+   	 epsilon_inf    = 0.0000e+00    # [1]
+    
+
+
+    Epsilon_aniso
+    { *  Ratio of the permittivities of material and vacuum
+
+      * epsilon() = epsilon
+   	 epsilon    = 0.0000e+00    # [1]
+    
+
+
+    Epsilon_Inf_aniso
+    { *  Ratio of the high frequency limit of permittivities of material and vacuum
+
+      * epsilon_inf() = epsilon_inf
+   	 epsilon_inf    = 0.0000e+00    # [1]
+    
+
+
+    RefractiveIndex
+    { *  Optical Refractive Index
+
+      * refractiveindex() = refractiveindex * (1 + alpha * (T-Tpar))
+   	 Tpar    = 3.0000e+02    # [K]
+   	 refractiveindex    = 0.0000e+00    # [1]
+   	 alpha    = 2.0000e-04    # [1/K]
+
+      * Gain dependence of refractive index in active region:
+      * a) Linear model: delta n = a0 * ( (n+p)/(2 * N0) - 1)
+      * b) Logarithmic model: delta n = a0 * log ( (n+p)/(2 * N0) )
+      * where n/p are the carrier densities in the active region.
+   	 a0    = 0.0000e+00    # [1]
+   	 N0    = 1.0000e+18    # [1/cm^3]
+    
+
+
+    ComplexRefractiveIndex
+    { *  Complex refractive index model: n_complex = n + i*k (unitless)
+      *  
+      *  with n = n_0 + delta_n_lambda + delta_n_T + delta_n_carr + delta_n_gain
+      *   	k = k_0 + delta_k_lambda         	+ delta_k_carr           	 
+      
+      * Base refractive index and extinction coefficient:
+      * 	n_0, k_0
+      
+      * Wavelength dependence (real and imag):
+      * 	Formula 0: delta_n_lambda = Cn_lambda * lambda + Dn_lambda * lambda^2
+      *            	delta_k_lambda = Ck_lambda * lambda + Dk_lambda * lambda^2
+      * 	Formula 1: Read tabulated values
+      *            	NumericalTable (...)  
+      * 	Formula 2: Read tabulated values from file
+      *            	NumericalTable = <string>
+      
+      * Temperature dependence (real):
+      * 	delta_n_T = n_0 * ( Cn_temp * (T-Tpar))
+      
+      * Carrier dependence (real)
+      * 	delta_n_carr = - Cn_carr * (const.) * (n/m_e + p/m_h)
+      
+      * Carrier dependence (imag)
+      * 	delta_k_carr = 1 / (4*PI) * (wavelength^Gamma_k_carr_e*Ck_carr_e*n + wavelength^Gamma_k_carr_h*Ck_carr_h*p)
+      
+      * Gain dependence (real)
+      * 	lin: delta_n_gain = Cn_gain * ( (n+p)/(2 * Npar) - 1)
+      * 	log: delta_n_gain = Cn_gain * log ( (n+p)/(2 * Npar ) )
+   	 n_0    = 1    # [1]
+   	 k_0    = 0.0000e+00    # [1]
+   	 Cn_lambda    = 0.0000e+00    # [um^-1]
+   	 Dn_lambda    = 0.0000e+00    # [um^-2]
+   	 Ck_lambda    = 0.0000e+00    # [um^-1]
+   	 Dk_lambda    = 0.0000e+00    # [um^-2]
+   	 Cn_temp    = 2.0000e-04    # [K^-1]
+   	 Cn_carr    = 1    # [1]
+   	 Ck_carr    = 0.0000e+00 ,    0.0000e+00    # [cm^2]
+   	 Gamma_k_carr    = 1 ,    1    # [1]
+   	 Cn_gain    = 0.0000e+00    # [1]
+   	 Npar    = 1.0000e+18    # [cm^-3]
+   	 Formula = 1
+   	 TableInterpolation = PositiveSpline, PositiveSpline
+   	 NumericalTable (
+   	   0.01653    1.01    0.024;
+   	   0.01676    1.01    0.0242;
+   	   0.01698    1.02    0.0191;
+   	   0.01722    1.02    3.4600e-03;
+   	   0.01746    1.01    3.4600e-03;
+   	   0.01771    1.01    3.5200e-03;
+   	   0.01908    0.995    4.1700e-03;
+   	   0.02066    0.987    4.4100e-03;
+   	   0.02254    0.979    5.0800e-03;
+   	   0.0248    0.969    5.8700e-03;
+   	   0.02755    0.957    6.8200e-03;
+   	   0.031    0.94    8.1600e-03;
+   	   0.03263    0.931    8.7100e-03;
+   	   0.03444    0.921    9.3200e-03;
+   	   0.03647    0.909    0.0102;
+   	   0.03757    0.902    0.0107;
+   	   0.03875    0.894    0.0111;
+   	   0.04    0.885    0.0116;
+   	   0.04133    0.876    0.0125;
+   	   0.04275    0.865    0.0135;
+   	   0.04428    0.854    0.0145;
+   	   0.04592    0.841    0.0155;
+   	   0.04769    0.826    0.0165;
+   	   0.04959    0.809    0.0177;
+   	   0.05166    0.789    0.019;
+   	   0.05391    0.766    0.0205;
+   	   0.05636    0.74    0.0222;
+   	   0.05904    0.707    0.0242;
+   	   0.06199    0.688    0.0268;
+   	   0.06358    0.646    0.0284;
+   	   0.06526    0.62    0.0302;
+   	   0.06702    0.591    0.0324;
+   	   0.06888    0.558    0.0348;
+   	   0.07085    0.52    0.0381;
+   	   0.07293    0.474    0.0423;
+   	   0.07514    0.419    0.0487;
+   	   0.07749    0.351    0.0595;
+   	   0.07999    0.258    0.0777;
+   	   0.08266    0.125    0.153;
+   	   0.08551    0.0616    0.301;
+   	   0.08856    0.0481    0.416;
+   	   0.09184    0.0409    0.517;
+   	   0.09537    0.0376    0.609;
+   	   0.09919    0.0344    0.7;
+   	   0.1033    0.0328    0.791;
+   	   0.1078    0.0331    0.883;
+   	   0.1127    0.0356    0.978;
+   	   0.1181    0.0396    1.08;
+   	   0.124    0.0442    1.18;
+   	   0.1305    0.0495    1.29;
+   	   0.1378    0.0557    1.4;
+   	   0.1417    0.0592    1.46;
+   	   0.1459    0.063    1.53;
+   	   0.1503    0.0671    1.59;
+   	   0.155    0.0716    1.66;
+   	   0.16    0.0765    1.74;
+   	   0.1653    0.082    1.81;
+   	   0.171    0.088    1.9;
+   	   0.1771    0.0946    1.98;
+   	   0.1837    0.102    2.07;
+   	   0.1907    0.11    2.17;
+   	   0.1984    0.119    2.28;
+   	   0.2066    0.13    2.39;
+   	   0.2156    0.141    2.51;
+   	   0.2254    0.155    2.64;
+   	   0.2362    0.172    2.79;
+   	   0.248    0.19    2.94;
+   	   0.261    0.209    3.11;
+   	   0.2755    0.233    3.3;
+   	   0.2917    0.261    3.51;
+   	   0.3    0.276    3.61;
+   	   0.31    0.294    3.74;
+   	   0.3179    0.31    3.84;
+   	   0.3263    0.326    3.95;
+   	   0.3351    0.344    4.06;
+   	   0.3444    0.364    4.17;
+   	   0.35    0.375    4.24;
+   	   0.3542    0.385    4.3;
+   	   0.3647    0.407    4.43;
+   	   0.3757    0.432    4.56;
+   	   0.3875    0.46    4.71;
+   	   0.4    0.49    4.86;
+   	   0.4133    0.523    5.02;
+   	   0.4275    0.558    5.2;
+   	   0.4428    0.598    5.38;
+   	   0.45    0.618    5.47;
+   	   0.4592    0.644    5.58;
+   	   0.4769    0.695    5.8;
+   	   0.4959    0.755    6.03;
+   	   0.5    0.769    6.08;
+   	   0.5061    0.789    6.15;
+   	   0.5166    0.826    6.28;
+   	   0.5276    0.867    6.42;
+   	   0.5391    0.912    6.55;
+   	   0.55    0.958    6.69;
+   	   0.551    0.963    6.7;
+   	   0.5636    1.02    6.85;
+   	   0.5767    1.08    7;
+   	   0.5904    1.15    7.15;
+   	   0.6    1.2    7.26;
+   	   0.6048    1.22    7.31;
+   	   0.6199    1.3    7.48;
+   	   0.6358    1.39    7.65;
+   	   0.65    1.47    7.79;
+   	   0.6526    1.49    7.82;
+   	   0.6702    1.6    8.01;
+   	   0.6888    1.74    8.21;
+   	   0.7    1.83    8.31;
+   	   0.7085    1.91    8.39;
+   	   0.7293    2.14    8.57;
+   	   0.75    2.4    8.62;
+   	   0.7514    2.41    8.62;
+   	   0.7749    2.63    8.6;
+   	   0.7999    2.8    8.45;
+   	   0.825    2.75    8.31;
+   	   0.8266    2.74    8.31;
+   	   0.85    2.61    8.22;
+   	   0.8551    2.58    8.21;
+   	   0.875    2.38    8.18;
+   	   0.8856    2.24    8.21;
+   	   0.9    2.06    8.3;
+   	   0.9184    1.86    8.44;
+   	   0.925    1.77    8.49;
+   	   0.95    1.49    8.88;
+   	   0.9537    1.47    8.95;
+   	   0.9919    1.37    9.49;
+   	   1    1.35    9.58;
+   	   1.033    1.26    10;
+   	   1.078    1.21    10.6;
+   	   1.127    1.2    11.2;
+   	   1.181    1.21    11.8;
+   	   1.2    1.21    12;
+   	   1.24    1.21    12.5;
+   	   1.305    1.23    13.2;
+   	   1.378    1.26    14;
+   	   1.459    1.33    14.9;
+   	   1.5    1.38    15.4;
+   	   1.55    1.44    16;
+   	   1.653    1.59    17.1;
+   	   1.771    1.77    18.3;
+   	   1.907    1.99    19.8;
+   	   2    2.15    20.7;
+   	   2.065    2.27    21.4;
+   	   2.254    2.62    23.3;
+   	   2.48    3.07    25.6;
+   	   2.755    3.68    28.3;
+   	   3    4.24    30.6;
+   	   3.1    4.45    31.5;
+   	   3.306    4.88    33.4;
+   	   3.542    5.44    35.6;
+   	   3.815    6    38.1;
+   	   4    6.43    39.8;
+   	   4.133    6.76    41;
+   	   4.509    7.61    44.3;
+   	   4.959    8.59    48.2;
+   	   5    8.67    48.6;
+   	   5.51    9.85    53.2;
+   	   6    11.1    57.6;
+   	   6.199    11.7    59.4;
+   	   6.526    12.7    62.2;
+   	   6.888    13.7    65.2;
+   	   7    14    66.2;
+   	   7.293    14.9    68.8;
+   	   7.749    16.5    72.7;
+   	   8    17.5    74.9;
+   	   8.266    18.6    77;
+   	   8.856    20.9    81.5;
+   	   9    21.5    82.6;
+   	   9.537    23.5    86.5;
+   	   10    25.3    89.8;
+   	   10.33    26.6    92.2;
+   	   11    29.2    96.6;
+   	   11.27    30.2    98.4;
+   	   12    33    1.0300e+02;
+   	   12.4    34.5    1.0600e+02;
+   	   13    36.6    1.0900e+02;
+   	   13.05    36.8    1.1000e+02;
+   	   13.78    39.7    1.1400e+02;
+   	   14    40.5    1.1600e+02;
+   	   14.59    42.8    1.1900e+02;
+   	   15.5    46    1.2400e+02;
+   	   16    47.7    1.2700e+02;
+   	   16.53    49.7    1.2900e+02;
+   	   17.71    53.8    1.3600e+02;
+   	   18    54.7    1.3700e+02;
+   	   19.07    57.6    1.4300e+02;
+   	   20    60.7    1.4700e+02;
+   	   20.66    62.9    1.5100e+02;
+   	   22    66.9    1.5700e+02;
+   	   22.54    68.3    1.6000e+02;
+   	   24    72.2    1.6800e+02;
+   	   24.8    75    1.7200e+02;
+   	   26    79.1    1.7800e+02;
+   	   27.55    84.7    1.8600e+02;
+   	   28    86.3    1.8900e+02;
+   	   30.01    94.2    1.9900e+02;
+   	 )
+   	 Tpar    = 3.0000e+02    # [K]
+    
+
+
+    * SpectralConversion
+    * { * Spectral Conversion Model
+    *   No default model, user has to define.
+    *   All wavelength parameters should be in nanometers.
+    *   Choice of Analytic or NumericalTable selected in Physics section of region
+    *  
+    *   ConversionEfficiency = float 	* ratio of absorbed photons that are reemitted.
+    *   AbsorptionScaling = float    	* scale absorption
+    *   EmissionScaling = float      	* scale emission
+    *   Analytic (
+    * 	AbsorptionProfile = (
+    *    	Gaussian(lambda0 sigma peakvalue dc_offset lambda_range0 lambda_range1)
+    *    	Lorentzian(lambda0 width peakvalue dc_offset lambda_range0 lambda_range1)
+    *    	...
+    * 	)
+    * 	EmissionProfile = (
+    *    	Gaussian(lambda0 sigma peakvalue dc_offset lambda_range0 lambda_range1)
+    *    	Lorentzian(lambda0 width peakvalue dc_offset lambda_range0 lambda_range1)
+    *    	...
+    * 	)
+    *   )
+    *   NumericalTable (
+    * 	AbsorptionProfile = (
+    *    	lambda0 value0
+    *    	lambda1 value1
+    *    	...
+    * 	)
+    * 	EmissionProfile = (
+    *    	lambda0 value0
+    *    	lambda1 value1
+    *    	...
+    * 	)
+
+    *   ConversionEfficiency = 1.0
+    * }
+
+
+    LatticeHeatCapacity
+    { *  lumped electron-hole-lattice heat capacity
+
+      * cv() = cv + cv_b * T + cv_c * T^2 + cv_d * T^3
+   	 cv    = 2.33    # [J/(K cm^3)]
+   	 cv_b    = 0.0000e+00    # [J/(K^2 cm^3)]
+   	 cv_c    = 0.0000e+00    # [J/(K^3 cm^3)]
+   	 cv_d    = 0.0000e+00    # [J/(K^4 cm^3)]
+    
+
+
+    Kappa
+    { *  Lattice thermal conductivity
+
+      * Formula = 0:
+      * kappa() = 1 / ( 1/kappa + 1/kappa_b * T + 1/kappa_c * T^2 )
+
+      * Formula = 1:
+      * kappa() = kappa + kappa_b * T + kappa_c * T^2
+
+      Formula = 1
+   	 kappa    = 2.38    # [W/(K cm)]
+   	 kappa_b    = 0.0000e+00    # [W/(K^2 cm)]
+   	 kappa_c    = 0.0000e+00    # [W/(K^3 cm)]
+
+
+      * AllDependent Thermal Conductivity
+   	 wL_n    = 0.2    # [1]
+   	 wL_p    = 0.02    # [1]
+   	 wT_n    = 8    # [1]
+   	 wT_p    = 6    # [1]
+   	 wTU_n    = 9.0000e+05    # [1]
+   	 wTU_p    = 2.0000e+06    # [1]
+   	 b    = 1.8600e+02    # [1]
+   	 M_n    = 30.9    # [Da]
+   	 M_p    = 10.8    # [Da]
+   	 R_n    = 1.2300e-10    # [m]
+   	 R_p    = 1.1700e-10    # [m]
+   	 r_del    = 1    # [1]
+   	 Ax    = 0.0000e+00    # [s^3]
+   	 eta    = 1.5000e-10    # [m]
+   	 Eu_n    = 9    # [eV]
+   	 Eu_p    = 45    # [eV]
+   	 ED_n    = 1.33    # [eV]
+   	 ED_p    = 1.33    # [eV]
+   	 dLy    = 0.3    # [m]
+   	 Lb    = 7.1600e-03    # [m]
+   	 Q_n    = 4    # [1]
+   	 Q_p    = 15    # [1]
+   	 Nomg    = 3    # [1]
+   	 order    = 2    # [1]
+
+      	** NumericalTable (
+      	**   Define table for parameters with format below
+      	**   N ED_n ED_p b Ax
+      	**   If this is defined, parameters ED_n/ED_p/b/Ax defined above are ignored
+      	** )
+
+   	 epsilon    = 11.7    # [F/cm]
+   	 m_c    = 0.9    # [kg]
+   	 m_v    = 0.58    # [kg]
+   	 rho    = 2.3290e+03    # [kg/m^3]
+   	 BL    = 2.0000e-24    # [s/K^3]
+   	 BT    = 9.3000e-13    # [1/K^4]
+   	 BTU    = 5.5000e-18    # [s]
+   	 omega1    = 2.3570e+13    # [1/s]
+   	 omega2    = 2.7490e+13    # [1/s]
+   	 omega3    = 7.4630e+13    # [1/s]
+   	 omega4    = 4.5820e+13    # [1/s]
+   	 M_h    = 28    # [Da]
+   	 R_h    = 1.4600e-10    # [m]
+   	 V_h    = 1.2100e-05    # [m^3/mol]
+   	 vL    = 8.4800e+03    # [m/s]
+   	 vLp    = 4.2400e+03    # [m/s]
+   	 vT    = 5.8600e+03    # [m/s]
+   	 vTU    = 2.0000e+03    # [m/s]
+   	 AI    = 1.3200e-45    # [s^3]
+    
+
+
+    Kappa_aniso
+    { *  Lattice thermal conductivity
+
+      * Formula = 0:
+      * kappa() = 1 / ( 1/kappa + 1/kappa_b * T + 1/kappa_c * T^2 )
+
+      * Formula = 1:
+      * kappa() = kappa + kappa_b * T + kappa_c * T^2
+
+      Formula = 1
+   	 kappa    = 2.38    # [W/(K cm)]
+   	 kappa_b    = 0.0000e+00    # [W/(K^2 cm)]
+   	 kappa_c    = 0.0000e+00    # [W/(K^3 cm)]
+
+
+      * AllDependent Thermal Conductivity
+   	 wL_n    = 0.2    # [1]
+   	 wL_p    = 0.02    # [1]
+   	 wT_n    = 8    # [1]
+   	 wT_p    = 6    # [1]
+   	 wTU_n    = 9.0000e+05    # [1]
+   	 wTU_p    = 2.0000e+06    # [1]
+   	 b    = 1.8600e+02    # [1]
+   	 M_n    = 30.9    # [Da]
+   	 M_p    = 10.8    # [Da]
+   	 R_n    = 1.2300e-10    # [m]
+   	 R_p    = 1.1700e-10    # [m]
+   	 r_del    = 1    # [1]
+   	 Ax    = 0.0000e+00    # [s^3]
+   	 eta    = 1.5000e-10    # [m]
+   	 Eu_n    = 9    # [eV]
+   	 Eu_p    = 45    # [eV]
+   	 ED_n    = 1.33    # [eV]
+   	 ED_p    = 1.33    # [eV]
+   	 dLy    = 0.3    # [m]
+   	 Lb    = 7.1600e-03    # [m]
+   	 Q_n    = 4    # [1]
+   	 Q_p    = 15    # [1]
+   	 Nomg    = 3    # [1]
+   	 order    = 2    # [1]
+
+      	** NumericalTable (
+      	**   Define table for parameters with format below
+      	**   N ED_n ED_p b Ax
+      	**   If this is defined, parameters ED_n/ED_p/b/Ax defined above are ignored
+      	** )
+
+   	 epsilon    = 11.7    # [F/cm]
+   	 m_c    = 0.9    # [kg]
+   	 m_v    = 0.58    # [kg]
+   	 rho    = 2.3290e+03    # [kg/m^3]
+   	 BL    = 2.0000e-24    # [s/K^3]
+   	 BT    = 9.3000e-13    # [1/K^4]
+   	 BTU    = 5.5000e-18    # [s]
+   	 omega1    = 2.3570e+13    # [1/s]
+   	 omega2    = 2.7490e+13    # [1/s]
+   	 omega3    = 7.4630e+13    # [1/s]
+   	 omega4    = 4.5820e+13    # [1/s]
+   	 M_h    = 28    # [Da]
+   	 R_h    = 1.4600e-10    # [m]
+   	 V_h    = 1.2100e-05    # [m^3/mol]
+   	 vL    = 8.4800e+03    # [m/s]
+   	 vLp    = 4.2400e+03    # [m/s]
+   	 vT    = 5.8600e+03    # [m/s]
+   	 vTU    = 2.0000e+03    # [m/s]
+   	 AI    = 1.3200e-45    # [s^3]
+    
+
+    Bandgap
+    { * For conductors Band Gap is zero and the following parameters are used:
+   	 WorkFunction    = 4.1    # [eV]
+   	 FermiEnergy    = 11.7    # [eV]
+      * for backward compatibility Chi0 could be used to define the work function.
+    
+
+    Resistivity
+    { * Resist(T) = Resist0 * ( 1 + TempCoef * ( T - 273 ) )
+   	 Resist0    = 2.4500e-06    # [ohm*cm]
+   	 TempCoef    = 4.5000e-03    # [1/K]
+    }                                                                           	 
+}
+
+Material= "Titanium" {
+    * Copyright (c) 1994-2018 Synopsys, Inc.
+    * This parameter file and the associated documentation are proprietary
+    * to Synopsys, Inc.  This parameter file may only be used in accordance
+    * with the terms and conditions of a written license agreement with
+    * Synopsys, Inc.  All other use, reproduction, or distribution of this
+    * parameter file is strictly prohibited.
+
+
+    Resistivity
+    { * Resist(T) = Resist0 * ( 1 + TempCoef * ( T - 273 ) )
+   	 Resist0    = 1.2600e-05    # [ohm*cm]
+   	 TempCoef    = 3.5000e-03    # [1/K]
+    
+
+    * Reference: SOPRA N&K Database
+    ComplexRefractiveIndex {
+      TableInterpolation = PositiveSpline, PositiveSpline
+      Formula = 1
+      NumericalTable(
+    	0.1800  1.20774 2.065205;
+    	0.1900  1.316755  2.260065;
+    	0.2000  1.48  2.45;
+    	0.2100  1.720912  2.598338;
+    	0.2200  2.016951  2.66775;
+    	0.2300  2.321471  2.604213;
+    	0.2400  2.54161 2.400758;
+    	0.2500  2.572579  2.154195;
+    	0.2600  2.480464  2.088274;
+    	0.2700  2.414541  2.052975;
+    	0.2800  2.372254  2.04366;
+    	0.2900  2.351044  2.055692;
+    	0.3000  2.348354  2.084435;
+    	0.3100  2.361625  2.125252;
+    	0.3200  2.388301  2.173506;
+    	0.3300  2.425822  2.224561;
+    	0.3400  2.471636  2.273829;
+    	0.3500  2.52297 2.313705;
+    	0.3600  2.576122  2.323725;
+    	0.3700  2.630314  2.323869;
+    	0.3800  2.68343 2.31562;
+    	0.3900  2.733411  2.300048;
+    	0.4000  2.776369  2.27817;
+    	0.4100  2.805519  2.250694;
+    	0.4200  2.827264  2.219278;
+    	0.4300  2.841735  2.185115;
+    	0.4400  2.848885  2.149456;
+    	0.4500  2.848305  2.114728;
+    	0.4600  2.839252  2.084477;
+    	0.4700  2.823172  2.054883;
+    	0.4800  2.80048 2.025856;
+    	0.4900  2.771415  1.997324;
+    	0.5000  2.737603  1.967574;
+    	0.5100  2.700764  1.934722;
+    	0.5200  2.657433  1.903712;
+    	0.5300  2.6069  1.875862;
+    	0.5400  2.548706  1.852421;
+    	0.5500  2.47794 1.834908;
+    	0.5600  2.391179  1.824749;
+    	0.5700  2.298247  1.822568;
+    	0.5800  2.201368  1.829451;
+    	0.5900  2.102607  1.846289;
+    	0.6000  2.006822  1.877807;
+    	0.6100  1.91713 1.926347;
+    	0.6200  1.830121  1.985327;
+    	0.6300  1.746458  2.053735;
+    	0.6400  1.666745  2.130431;
+    	0.6500  1.591944  2.215719;
+    	0.6600  1.522716  2.308684;
+    	0.6700  1.459061  2.405752;
+    	0.6800  1.401485  2.505086;
+    	0.6900  1.350147  2.605323;
+    	0.7000  1.308842  2.70028;
+    	0.7100  1.277696  2.788593;
+    	0.7200  1.251963  2.875185;
+    	0.7300  1.230646  2.96012;
+    	0.7400  1.212715  3.043608;
+    	0.7500  1.19474 3.12641;
+    	0.7600  1.176222  3.208536;
+    	0.7700  1.159275  3.289673;
+    	0.7800  1.143788  3.369617;
+    	0.7900  1.129663  3.448425;
+    	0.8000  1.117038  3.525918;
+    	0.8100  1.105745  3.602155;
+    	0.8200  1.095448  3.677328;
+    	0.8300  1.085986  3.751492;
+    	0.8400  1.077196  3.824705;
+    	0.8500  1.068523  3.896868;
+    	0.8600  1.06003 3.968127;
+    	0.8700  1.051964  4.038717;
+    	0.8800  1.04432 4.108688;
+    	0.8900  1.037069  4.178371;
+    	0.9000  1.030223  4.247684;
+    	0.9100  1.023604  4.319156;
+    	0.9200  1.017208  4.392921;
+    	0.9300  1.011101  4.468182;
+    	0.9400  1.005343  4.544141;
+    	0.9500  1 4.62;
+    	0.9600  .99644  4.687176;
+    	0.9700  .993438 4.752549;
+    	0.9800  .990878 4.816387;
+    	0.9900  .988645 4.878958;
+    	1.0000  .986624 4.940531;
+    	1.010 .984698 5.001373;
+    	1.020 .982751 5.061754;
+    	1.030 .980669 5.121941;
+    	1.040 .976805 5.185;
+    	1.050 .971979 5.249489;
+    	1.060 .966894 5.31418;
+    	1.070 .961601 5.379036;
+    	1.080 .956152 5.444019;
+    	1.090 .950599 5.50909;
+    	1.100 .944993 5.574213;
+    	1.110 .939386 5.639348;
+    	1.120 .933831 5.704458;
+    	1.130 .928819 5.768796;
+    	1.140 .924996 5.831369;
+    	1.150 .921325 5.893892;
+    	1.160 .917773 5.956459;
+    	1.170 .914312 6.019166;
+    	1.180 .910909 6.082107;
+    	1.190 .907535 6.145379;
+    	1.200 .904157 6.209074;
+    	1.210 .900746 6.273289;
+    	1.220 .89727  6.338118;
+    	1.230 .893698 6.403657;
+    	1.240 .89 6.47;
+    	1.250 .885982 6.53822;
+    	1.260 .881984 6.606184;
+    	1.270 .878062 6.67312;
+    	1.280 .874242 6.738704;
+    	1.290 .870494 6.803601;
+    	1.300 .866816 6.868038;
+    	1.310 .863201 6.932237;
+    	1.320 .859577 6.996549;
+    	1.330 .855398 7.06216;
+    	1.340 .851392 7.127992;
+    	1.350 .847688 7.194033;
+    	1.360 .844412 7.260278;
+    	1.370 .841691 7.326716;
+    	1.380 .839975 7.393406;
+    	1.390 .84031  7.460529;
+    	1.400 .841317 7.527765;
+    	1.410 .842869 7.595052;
+    	1.420 .844837 7.66233;
+    	1.430 .847093 7.729535;
+    	1.440 .849509 7.796607;
+    	1.450 .850901 7.863115;
+    	1.460 .852037 7.929311;
+    	1.470 .853233 7.995288;
+    	1.480 .854536 8.061046;
+    	1.490 .855996 8.126584;
+    	1.500 .857661 8.191904;
+    	1.510 .859581 8.257007;
+    	1.520 .862505 8.321619;
+    	1.530 .865905 8.385966;
+    	1.540 .869559 8.450153;
+    	1.550 .87342  8.514217;
+    	1.560 .877442 8.578197;
+    	1.570 .881578 8.642129;
+    	1.580 .885779 8.706051;
+    	1.590 .89 8.77;
+    	1.600 .893536 8.834834;
+    	1.610 .897043 8.899713;
+    	1.620 .900533 8.964601;
+    	1.630 .904019 9.029461;
+    	1.640 .907515 9.094255;
+    	1.650 .911031 9.15895;
+    	1.660 .914582 9.223506;
+    	1.670 .91818  9.287887;
+    	1.680 .922005 9.3516;
+    	1.690 .926066 9.414623;
+    	1.700 .930183 9.477437;
+    	1.710 .934345 9.540071;
+    	1.720 .93854  9.602554;
+    	1.730 .942755 9.664919;
+    	1.740 .94698  9.727194;
+    	1.750 .9512 9.789409;
+    	1.760 .955406 9.851594;
+    	1.770 .959584 9.91378;
+    	1.780 .963312 9.976133;
+    	1.790 .966957 10.03856;
+    	1.800 .970578 10.10106;
+    	1.810 .974189 10.16366;
+    	1.820 .977805 10.22638;
+    	1.830 .98144  10.28924;
+    	1.840 .985108 10.35226;
+    	1.850 .988823 10.41547;
+    	1.860 .992601 10.47888;
+    	1.870 .996455 10.54252;
+    	1.880 1.000428  10.60661;
+    	1.890 1.00477 10.67284;
+    	1.900 1.009221  10.73929;
+    	1.910 1.013784  10.8059;
+    	1.920 1.018459  10.87258;
+    	1.930 1.023247  10.93927;
+    	1.940 1.028149  11.00589;
+    	1.950 1.033165  11.07236;
+    	1.960 1.038297  11.13862;
+    	1.970 1.043546  11.20459;
+    	1.980 1.048912  11.27019;
+    	1.990 1.054396  11.33535;
+    	2.000 1.06  11.4;
+    	2.010 1.066018  11.46087;
+    	2.020 1.072153  11.52113;
+    	2.030 1.078394  11.58081;
+    	2.040 1.084733  11.63997;
+    	2.050 1.091159  11.69863;
+    	2.060 1.097664  11.75685;
+    	2.070 1.104237  11.81465;
+    	2.080 1.110869  11.87209;
+    	2.090 1.11755 11.92919;
+    	2.100 1.12427 11.98601;
+    	2.110 1.131021  12.04258;
+    	2.120 1.137792  12.09894;
+    	2.130 1.144574  12.15514;
+    	2.140 1.151275  12.21125;
+    	2.150 1.157642  12.26744;
+    	2.160 1.163998  12.32359;
+    	2.170 1.170342  12.37972;
+    	2.180 1.176678  12.43587;
+    	2.190 1.183005  12.49207;
+    	2.200 1.189327  12.54836;
+    	2.210 1.195644  12.60477;
+    	2.220 1.201958  12.66134;
+    	2.230 1.20827 12.71811;
+    	2.240 1.214582  12.77509;
+    	2.250 1.220896  12.83234;
+    	2.260 1.227212  12.88988;
+    	2.270 1.233533  12.94775;
+    	2.280 1.23986 13.00598;
+    	2.290 1.246195  13.06462;
+    	2.300 1.252539  13.12368;
+    	2.310 1.258893  13.18321;
+    	2.320 1.265259  13.24324;
+    	2.330 1.271639  13.30381;
+    	2.340 1.278034  13.36495;
+    	2.350 1.284446  13.42669;
+    	2.360 1.290875  13.48907;
+    	2.370 1.297325  13.55212;
+    	2.380 1.303795  13.61588;
+    	2.390 1.310289  13.68039;
+    	2.400 1.316806  13.74567;
+    	2.410 1.323349  13.81176;
+    	2.420 1.32992 13.8787;
+    	2.430 1.336519  13.94651;
+    	2.440 1.343149  14.01524;
+    	2.450 1.34981 14.08492;
+    	2.460 1.356505  14.15559;
+    	2.470 1.363234  14.22727;
+    	2.480 1.37  14.3;
+      
+    
+}
+                                                                          	 
+
+
+
+
+
